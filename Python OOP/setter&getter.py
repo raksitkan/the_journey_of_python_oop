@@ -33,4 +33,4 @@ obj1 = Employee(name="กร",
 # obj1.setSalary(newsalary=75000)
 # obj1.setDepartment(newdepartment="it")
 print(f"พนักงานมาทำงานเร็วที่สุด = {obj1.getName()}")
-obj1._showdetail()
+obj1.getName()
