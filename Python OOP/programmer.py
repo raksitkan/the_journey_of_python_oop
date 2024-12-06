@@ -1,3 +1,4 @@
+from employee import Employee
 class Programmer(Employee):
     __departmentName = "พัฒนาระบบ"
     def __init__(self,name,salary,exp,skill):

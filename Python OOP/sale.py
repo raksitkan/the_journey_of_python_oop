@@ -1,4 +1,4 @@
-from employee.py import Employee
+from employee import Employee
 
 class Sale(Employee):
     __departmentName = "ฝ่ายขาย"
