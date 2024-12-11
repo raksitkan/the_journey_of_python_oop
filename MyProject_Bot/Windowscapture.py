@@ -87,17 +87,17 @@ class WindowCapture:
         else:
             raise ValueError("Invalid screenshot method. Choose 'pyautogui' or 'win32'.")
 
-# ตัวอย่างการใช้งาน
-if __name__ == "__main__":
-    window_name = "Your Window Name"
-    capture = WindowCapture(window_name)
+# # ตัวอย่างการใช้งาน
+# if __name__ == "__main__":
+#     window_name = "Your Window Name"
+#     capture = WindowCapture(window_name)
     
-    # จับภาพด้วย pyautogui
-    img_pyautogui = capture.screenshot(method="pyautogui")
-    cv.imwrite("pyautogui_capture.png", img_pyautogui)
+#     # จับภาพด้วย pyautogui
+#     img_pyautogui = capture.screenshot(method="pyautogui")
+#     cv.imwrite("pyautogui_capture.png", img_pyautogui)
     
-    # จับภาพด้วย win32
-    img_win32 = capture.screenshot(method="win32")
-    cv.imwrite("win32_capture.png", img_win32)
+#     # จับภาพด้วย win32
+#     img_win32 = capture.screenshot(method="win32")
+#     cv.imwrite("win32_capture.png", img_win32)
     
-    print("Captured images successfully!")
+#     print("Captured images successfully!")

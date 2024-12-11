@@ -3,57 +3,58 @@ import numpy as np
 
 class Classbot:
     def __init__(self, main_img, temp_img):
-        ### Read img ###
-        self.main_img = main_img
-        self.temp_img = cv.imread(temp_img, cv.IMREAD_ANYCOLOR)  # อ่านภาพเทมเพลต
-    
-    def search(self,threshold=0.8,debug=False,text=""):
-        ### เปรียบเทียบภาพ ###
-        result = cv.matchTemplate(self.main_img, self.temp_img, cv.TM_CCOEFF_NORMED)  # หาตำแหน่งที่ภาพเหมือนกัน
-        _, maxval, _, maxloc = cv.minMaxLoc(result)  # หาค่าความคล้ายสูงสุดและตำแหน่ง
-        threshold = 0.8  # กำหนดค่าความคล้ายขั้นต่ำ
-        locations = np.where(result >= threshold)  # หาตำแหน่งที่ค่าความคล้าย >= threshold       
-        locations = list(zip(*locations[::-1]))  # แปลงตำแหน่งเป็น list ของพิกัด (x, y)
-        
-        height = self.temp_img.shape[0]  # ความสูงของภาพเทมเพลต
-        width = self.temp_img.shape[1]  # ความกว้างของภาพเทมเพลต
-        rectangles = []  # สร้างรายการสำหรับเก็บกรอบสี่เหลี่ยม
+        """
+        main_img: ภาพหลักที่ต้องการค้นหา (เช่น ภาพจากหน้าจอ)
+        temp_img: ชื่อไฟล์ของภาพเทมเพลตที่ต้องการค้นหา
+        """
+        self.main_img = main_img  # ภาพหลัก
+        self.temp_img = cv.imread(temp_img, cv.IMREAD_ANYCOLOR)  # โหลดภาพเทมเพลต
+        if self.temp_img is None:
+            raise Exception(f"Template image '{temp_img}' not found!")
+
+    def search(self, threshold=0.8, debug=False, text=""):
+        """
+        ค้นหาตำแหน่งของภาพเทมเพลตในภาพหลัก
+        threshold: ค่าความคล้ายขั้นต่ำ (ค่า 0.8 = 80%)
+        debug: หาก True จะวาดกรอบและแสดงภาพในหน้าต่าง
+        text: ข้อความที่ต้องการแสดงบนกรอบที่พบ
+        """
+        # คำนวณการจับคู่ภาพ
+        result = cv.matchTemplate(self.main_img, self.temp_img, cv.TM_CCOEFF_NORMED)
+        locations = np.where(result >= threshold)  # หาตำแหน่งที่ค่าความคล้าย >= threshold
+        locations = list(zip(*locations[::-1]))  # แปลงตำแหน่ง (y, x) เป็น (x, y)
+
+        height, width = self.temp_img.shape[:2]  # ดึงขนาดของภาพเทมเพลต
+        rectangles = []  # เก็บตำแหน่งของกรอบสี่เหลี่ยม
+
+        # สร้างกรอบสี่เหลี่ยมสำหรับทุกตำแหน่งที่พบ
         for loc in locations:
-            rect = [int(loc[0]), int(loc[1]), width, height]  # สร้างกรอบสี่เหลี่ยม (x, y, ความกว้าง, ความสูง)
-            rectangles.append(rect)  # เพิ่มกรอบเข้าไปในรายการ
-            rectangles.append(rect)  # เพิ่มซ้ำสำหรับการตรวจจับกรอบที่ซ้อนกัน
-        rectangles, _ = cv.groupRectangles(rectangles, groupThreshold=1, eps=0.5)  
-        # รวมกรอบที่ซ้อนทับกันให้เป็นกรอบเดียว
-        # print(rectangles)  # แสดงผลลัพธ์กรอบที่ถูกจัดกลุ่ม
-        # print(f"พบภาพทั้งหมด : {len(rectangles)}")  # แสดงจำนวนกรอบทั้งหมด
-        # exit
-        point = []
-        if len(rectangles):
-            for (x,y,w,h) in rectangles:
-                # print(x,y,w,h,)
-                topleft = (x,y)
-                bottomright = (x+w,y+h)
-                centerx = x + int(w / 2)  # คำนวณตำแหน่ง x ของจุดกลางโดยการบวกครึ่งหนึ่งของความกว้าง (w)
-                centery = y + int(h / 2)  # คำนวณตำแหน่ง y ของจุดกลางโดยการบวกครึ่งหนึ่งของความสูง (h)
-                # add x y to point for click
-                point.append((centerx, centery))  # เพิ่มพิกัดของจุดกลางลงในลิสต์ 'point'
-                if debug:
-                    cv.rectangle(self.main_img, topleft, bottomright, color=(0, 255, 0), thickness=2, lineType=cv.LINE_4)  # วาดกรอบสี่เหลี่ยม
-                    cv.drawMarker(self.main_img, (centerx, centery), color=(255, 0, 145), markerSize=30, markerType=cv.MARKER_CROSS, thickness=1)  # วาดเครื่องหมายกากบาทที่จุดกลาง
-                    # print(centerx,centery)
-                    ### Put text ###
-                    font = cv.FONT_HERSHEY_COMPLEX
-                    position = (topleft[0] + 10, topleft[1] - 10)  # ตำแหน่งข้อความ
-                    fontsize = 0.35
-                    color = (0, 255, 0)
-                    cv.putText(self.main_img,text, position, font, fontsize, color, thickness=1)  # ใส่ข้อความ "jelly"
-        else:
-            print("ไม่เจอรูปภาพ")
+            rect = [int(loc[0]), int(loc[1]), width, height]
+            rectangles.append(rect)
+            rectangles.append(rect)  # เพิ่มซ้ำเพื่อให้ groupRectangles ทำงานได้ดีขึ้น
+        rectangles, _ = cv.groupRectangles(rectangles, groupThreshold=1, eps=0.5)  # รวมกรอบซ้อนกัน
+
+        points = []  # เก็บพิกัดของจุดกลางของกรอบที่พบ
+        for (x, y, w, h) in rectangles:
+            # คำนวณพิกัดมุมและจุดศูนย์กลาง
+            centerx = x + int(w / 2)
+            centery = y + int(h / 2)
+            points.append((centerx, centery))
+
+            # วาดกรอบและข้อความหาก debug=True
+            if debug:
+                topleft = (x, y)
+                bottomright = (x + w, y + h)
+                cv.rectangle(self.main_img, topleft, bottomright, color=(0, 255, 0), thickness=2, lineType=cv.LINE_4)
+                cv.drawMarker(self.main_img, (centerx, centery), color=(255, 0, 145), markerSize=30, markerType=cv.MARKER_CROSS, thickness=1)
+                font = cv.FONT_HERSHEY_COMPLEX
+                position = (x + 10, y - 10)
+                cv.putText(self.main_img, text, position, font, 0.35, (0, 255, 0), thickness=1)
+
+        # แสดงภาพผลลัพธ์แบบเรียลไทม์เฉพาะเมื่อ debug=True
         if debug:
-            print(np.int32(point))
-            print(f"เจอรูปภาพทั้งหมด {len(np.int32(point))} รูป")
-        # แสดงภาพ
-            cv.imshow("cookie", self.main_img)  # แสดงภาพที่มีกรอบและข้อความ
-            cv.waitKey(0)  # รอให้ผู้ใช้กดปุ่มก่อนปิดหน้าต่าง
-            cv.destroyAllWindows()  # ปิดหน้าต่างทั้งหมด
-        return(point)
+            cv.imshow("Real-Time Detection", self.main_img)
+        else:
+            cv.imshow("Real-Time Detection", self.main_img)
+        # คืนค่าพิกัดของจุดที่พบทั้งหมด
+        return points
