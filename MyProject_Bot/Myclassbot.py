@@ -23,7 +23,6 @@ class Classbot:
         result = cv.matchTemplate(self.main_img, self.temp_img, cv.TM_CCOEFF_NORMED)
         locations = np.where(result >= threshold)  # หาตำแหน่งที่ค่าความคล้าย >= threshold
         locations = list(zip(*locations[::-1]))  # แปลงตำแหน่ง (y, x) เป็น (x, y)
-
         height, width = self.temp_img.shape[:2]  # ดึงขนาดของภาพเทมเพลต
         rectangles = []  # เก็บตำแหน่งของกรอบสี่เหลี่ยม
 
