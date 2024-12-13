@@ -78,7 +78,7 @@ class WindowCapture:
         
         return img
 
-    def screenshot(self, method="pyautogui"):
+    def screenshot(self, method="win32"):
         """เลือกวิธีการจับภาพหน้าจอ"""
         if method == "pyautogui":
             return self.screenshot_with_pyautogui()

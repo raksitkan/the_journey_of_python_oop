@@ -56,8 +56,8 @@ class Classbot:
         # แสดงภาพผลลัพธ์แบบเรียลไทม์เฉพาะเมื่อ debug=True
         if debug:
             cv.imshow("Real-Time Detection", self.main_img)
-        else:
-            cv.imshow("Real-Time Detection", self.main_img)
+        # else:
+        #     cv.imshow("Real-Time Detection", self.main_img)
             # print("close debug show screen")
         # คืนค่าพิกัดของจุดที่พบทั้งหมด
         return points
