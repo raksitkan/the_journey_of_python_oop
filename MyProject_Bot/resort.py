@@ -22,7 +22,7 @@ people_img = [
     "resort_img/h5.jpg",
     "resort_img/h6.jpg",
     "resort_img/h7.jpg",
-    "resort_img/h8.jpg",
+    "resort_img/h8.jpg"
 ]
 # for p_img in people_img:
 #     print(p_img)
@@ -35,7 +35,7 @@ coin_img = [
     "resort_img/coin6.jpg",
     "resort_img/coin7.jpg",
     "resort_img/coin8.jpg",
-    "resort_img/coin9.jpg",
+    "resort_img/coin9.jpg"
 ]
 # for coin in coin_img:
 #     print(coin)
@@ -44,7 +44,7 @@ utility = [
     "resort_img/room.jpg",
     "resort_img/room2.jpg",
     "resort_img/room3.jpg",
-    "resort_img/out2.jpg",
+    "resort_img/out2.jpg"
 ]
 
 
@@ -129,7 +129,7 @@ while True:
                     sleep(3)
 
                     print("==== กำลังออกจากห้องนอน ====")
-                    clicker.click_image(screen, uit=0, threshold=0.85)
+                    clicker.click_image(screen, uit=0, threshold=0.9)
                     sleep(3)
                     energy = False
                     room = True
@@ -192,7 +192,7 @@ while True:
                     sleep(3)
 
                     print("==== กำลังออกจากห้องแขกพิเศษ ====")
-                    clicker.click_image(screen, uit=4, threshold=0.75)
+                    clicker.click_image(screen, uit=4, threshold=0.9)
                     sleep(3)
                     energy = False
                     room = False
