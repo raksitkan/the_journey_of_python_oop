@@ -2,15 +2,18 @@ import cv2 as cv
 import numpy as np
 
 class Classbot:
-    def __init__(self, main_img, temp_img):
+    def __init__(self, main_img, temp_img=""):
         """
         main_img: ภาพหลักที่ต้องการค้นหา (เช่น ภาพจากหน้าจอ)
         temp_img: ชื่อไฟล์ของภาพเทมเพลตที่ต้องการค้นหา
         """
         self.main_img = main_img  # ภาพหลัก
-        self.temp_img = cv.imread(temp_img, cv.IMREAD_ANYCOLOR)  # โหลดภาพเทมเพลต
-        if self.temp_img is None:
-            raise Exception(f"Template image '{temp_img}' not found!")
+        self.temp_img = None  # ตั้งค่าเริ่มต้นสำหรับ temp_img
+        if temp_img:  # ตรวจสอบว่ามีการส่ง temp_img หรือไม่
+            self.temp_img = cv.imread(temp_img, cv.IMREAD_ANYCOLOR)  # โหลดภาพเทมเพลต
+            if self.temp_img is None:
+                raise Exception(f"Template image '{temp_img}' not found!")
+
 
     def search(self, threshold=0.8, debug=False, text=""):
         """
@@ -55,5 +58,16 @@ class Classbot:
             cv.imshow("Real-Time Detection", self.main_img)
         else:
             cv.imshow("Real-Time Detection", self.main_img)
+            # print("close debug show screen")
         # คืนค่าพิกัดของจุดที่พบทั้งหมด
         return points
+    
+    def getcolor(self, x, y, color="0x000000"):
+        b, g, r = self.main_img[y, x]
+        sumvalue = self.main_img[y, x].sum()
+        hex_value = '%02x%02x%02x' % (r, g, b)
+        hex_value = hex_value.upper()
+        hex_value = '0x' + hex_value
+        print(f"BGR at ({x}, {y}): {b}, {g}, {r}, Sum: {sumvalue}, Hex: {hex_value}")
+        return (hex_value == color), sumvalue
+
