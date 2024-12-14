@@ -22,7 +22,12 @@ people_img = [
     "resort_img/h5.jpg",
     "resort_img/h6.jpg",
     "resort_img/h7.jpg",
-    "resort_img/h8.jpg"
+    "resort_img/h8.jpg",
+    "resort_img/clean.jpg",
+    "resort_img/key.jpg",
+    "resort_img/q.jpg"
+
+    
 ]
 # for p_img in people_img:
 #     print(p_img)
@@ -35,7 +40,13 @@ coin_img = [
     "resort_img/coin6.jpg",
     "resort_img/coin7.jpg",
     "resort_img/coin8.jpg",
-    "resort_img/coin9.jpg"
+    "resort_img/coin9.jpg",
+    "resort_img/coin10.jpg",
+    "resort_img/clean.jpg",
+    "resort_img/plus.jpg",
+    "resort_img/paper.jpg",
+    "resort_img/paper2.jpg"
+
 ]
 # for coin in coin_img:
 #     print(coin)
@@ -85,7 +96,7 @@ while True:
     # หน้าหลัก
     for p_img in people_img:
         bot = Classbot(screen, p_img)
-        points = bot.search(debug=False, text="", threshold=0.9)
+        points = bot.search(debug=False, text="", threshold=0.8)
         for pos in points:
             myclick.control_click(
                 hwid, pos[0], pos[1] - 33
@@ -117,7 +128,7 @@ while True:
             screen = windows.screenshot()
             for coin in coin_img:
                 bot = Classbot(screen, coin)
-                points = bot.search(debug=False, text="coin", threshold=0.7)
+                points = bot.search(debug=False, text="coin", threshold=0.85)
                 if points:
                     for coin in points:
                         print(f"==== เก็บ coin ที่ตำแหน่ง x={coin[0]}, y={coin[1]}====")
@@ -148,7 +159,7 @@ while True:
             screen = windows.screenshot()
             for coin in coin_img:
                 bot = Classbot(screen, coin)
-                points = bot.search(debug=False, text="coin", threshold=0.7)
+                points = bot.search(debug=False, text="coin", threshold=0.85)
                 if points:
                     for coin in points:
                         print(f"==== เก็บ coin ที่ตำแหน่ง x={coin[0]}, y={coin[1]}====")
@@ -160,7 +171,7 @@ while True:
                     sleep(3)
 
                     print("==== กำลังออกจากห้องอาหาร ====")
-                    clicker.click_image(screen, uit=0, threshold=0.85)
+                    clicker.click_image(screen, uit=0, threshold=0.9)
                     sleep(3)
                     energy = False
                     room = False
@@ -180,7 +191,7 @@ while True:
             screen = windows.screenshot()
             for coin in coin_img:
                 bot = Classbot(screen, coin)
-                points = bot.search(debug=False, text="coin", threshold=0.7)
+                points = bot.search(debug=False, text="coin", threshold=0.85)
                 if points:
                     for coin in points:
                         print(f"==== เก็บ coin ที่ตำแหน่ง x={coin[0]}, y={coin[1]}====")
