@@ -96,7 +96,7 @@ while True:
     # หน้าหลัก
     for p_img in people_img:
         bot = Classbot(screen, p_img)
-        points = bot.search(debug=False, text="", threshold=0.8)
+        points = bot.search(debug=True, text="", threshold=0.8)
         for pos in points:
             myclick.control_click(
                 hwid, pos[0], pos[1] - 33
@@ -147,7 +147,7 @@ while True:
                     print("==== ออกจากห้องนอนแล้ว ====")
 
         if room == True:
-            print("=== เข้าไปเก็บ coin อาหาร ===")
+            print("=== เข้าไปเก็บ coin ห้องอาหาร ===")
             sleep(3)
             screen = windows.screenshot()
             bot = Classbot(screen, utility[2])

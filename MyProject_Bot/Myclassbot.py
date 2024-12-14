@@ -71,3 +71,4 @@ class Classbot:
         print(f"BGR at ({x}, {y}): {b}, {g}, {r}, Sum: {sumvalue}, Hex: {hex_value}")
         return (hex_value == color), sumvalue
 
+    
